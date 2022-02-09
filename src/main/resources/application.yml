@@ -1,8 +1,7 @@
 ssh:
   username: nor
   password: goteras
-  #172.30.223.20    |     #s07rigsa
-  host: 172.30.223.20
+  host: s07rigsa
   port: 22
 
 server:
