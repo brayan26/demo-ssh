@@ -46,7 +46,7 @@ public class SshConnectService implements ISshConnect {
 
             InputStream in = channelExec.getInputStream();
             // Exec the command.
-            log.info("Run command: {}", command);
+            log.info("Run command: {} in the server {}", command, session.getHost());
             channelExec.setCommand(command);
             channelExec.connect();
             // Get response.
