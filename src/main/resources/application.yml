@@ -9,4 +9,4 @@ server:
 
 helm:
   path:
-    base: /product
+    base: product
