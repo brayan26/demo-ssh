@@ -1,11 +1,20 @@
 package com.example.demo.domain.ssh;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-@NoArgsConstructor
-@Data
 public class SshResponse {
     private String response;
+
+    public SshResponse() {
+    }
+
+    public SshResponse(String response) {
+        this.response = response;
+    }
+
+    public String getResponse() {
+        return response;
+    }
+
+    public void setResponse(String response) {
+        this.response = response;
+    }
 }

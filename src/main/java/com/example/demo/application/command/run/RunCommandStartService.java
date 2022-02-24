@@ -11,8 +11,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RunCommandStartService {
-    private static final String COMMAND = "helm install spv-space /home/users/nor/SPV_USPACE_V1.2.1/migracion/helm-templates/spv-space/";
-//    private static final String COMMAND="ls -l ~/SPV_USPACE_V1.2.1/migracion/helm-templates/spv-space/";
+    private static final String COMMAND = "/root/helm_install.sh";
+    private static final String EMPTY = "";
+
     @Value("${ssh.username}")
     String username;
     @Value("${ssh.password}")
@@ -31,6 +32,9 @@ public class RunCommandStartService {
         Session session = service.connect(params);
         //run command
         String response = service.executeCommand(session, COMMAND);
+        if (EMPTY.equals(response)){
+            response = "Chart deployed successfully";
+        }
         //Response
         return new SshResponse(response);
     }

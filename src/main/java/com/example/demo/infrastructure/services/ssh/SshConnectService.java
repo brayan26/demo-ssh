@@ -11,10 +11,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import com.jcraft.jsch.ChannelExec;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-@Slf4j
 @Service
 public class SshConnectService implements ISshConnect {
     private static final String ENTER_KEY = "\n";
@@ -23,7 +21,7 @@ public class SshConnectService implements ISshConnect {
     public Session connect(SshParams sshParams) {
         try {
             JSch jsch = new JSch();
-            log.info("Connecting to: {}", sshParams);
+//            log.info("Connecting to: {}", sshParams);
             Session session = jsch.getSession(sshParams.getUsername(), sshParams.getHost(), sshParams.getPort());
             session.setPassword(sshParams.getPassword());
             // Parametro para no validar key de conexion.
@@ -46,7 +44,7 @@ public class SshConnectService implements ISshConnect {
 
             InputStream in = channelExec.getInputStream();
             // Exec the command.
-            log.info("Run command: {} in the server {}", command, session.getHost());
+//            log.info("Run command: {} in the server {}", command, session.getHost());
             channelExec.setCommand(command);
             channelExec.connect();
             // Get response.

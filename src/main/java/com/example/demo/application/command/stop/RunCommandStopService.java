@@ -10,7 +10,9 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class RunCommandStopService {
-    private static final String COMMAND = "helm uninstall spv-space";
+    private static final String COMMAND = "/usr/local/bin/helm uninstall spv-space";
+    private static final String EMPTY = "";
+
     @Value("${ssh.username}")
     String username;
     @Value("${ssh.password}")
@@ -29,6 +31,9 @@ public class RunCommandStopService {
         Session session = service.connect(params);
         //run command
         String response = service.executeCommand(session, COMMAND);
+        if (EMPTY.equals(response)) {
+            response = "Chart destroyed";
+        }
         //Response
         return new SshResponse(response);
     }

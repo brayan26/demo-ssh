@@ -1,8 +1,12 @@
 ssh:
-  username: nor
-  password: goteras
-  host: s07rigsa
+  username: root
+  password: Raytheoff
+  host: console-openshift-console.apps.ocpcluster.cloud.satm.maqtor
   port: 22
 
 server:
   port: 8081
+
+helm:
+  path:
+    base: /product
