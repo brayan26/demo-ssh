@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f spv-docker-compose.yml
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: igs-core-backend
+  name: igs-core-backend
+  namespace: {{ .Values.namespace }}
+spec:
+  type: NodePort
+  selector:
+    io.kompose.service: igs-core-backend
+  ports:
+    - protocol: TCP
+      nodePort: 30001
+      port: 8443
+      targetPort: 8443
+#status:
+#  loadBalancer: {}

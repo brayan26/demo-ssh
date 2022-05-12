@@ -1,0 +1,21 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f spv-docker-compose.yml
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: lsup-link
+  name: lsup-link
+  namespace: {{ .Values.namespace }}
+spec:
+  ports:
+    - name: "61409"
+      protocol: TCP
+      port: 61409
+      targetPort: 61409
+  selector:
+    io.kompose.service: lsup-link
+status:
+  loadBalancer: {}

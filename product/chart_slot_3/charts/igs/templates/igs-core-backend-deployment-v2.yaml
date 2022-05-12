@@ -1,0 +1,52 @@
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f spv-docker-compose.yml
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: igs-core-backend
+  name: igs-core-backend
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: igs-core-backend
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f spv-docker-compose.yml
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/cisp-default: "true"
+        io.kompose.network/supervision: "true"
+        io.kompose.service: igs-core-backend
+    spec:
+      imagePullSecrets:
+      - name: {{ .Values.docker.repository }}
+      containers:
+        - env:
+            - name: IGS_CORE_MONITOR_SUBSCRIBER_SOCKET_URL
+              value: tcp://igs-monitor:6666
+            - name: IGS_GLOBAL_CAS_AUTHENTICATION_HOST
+              value: reverse-proxy
+            - name: IGS_GLOBAL_CAS_AUTHENTICATION_PORT
+              value: "80"
+            - name: IGS_GLOBAL_CAS_AUTHENTICATION_SECCION_COMMON
+              value: authorization-cas/cas/oauth2.0
+            - name: IGS_GLOBAL_SYSTEM_MESSAGES_REST_HOST
+              value: lsup-system-messages-rest-agent
+            - name: IGS_GLOBAL_SYSTEM_MESSAGES_REST_PORT
+              value: "8082"
+          image: {{ .Values.igs.coreBackend.image }}
+          name: igs-core-backend
+          ports:
+            - containerPort: {{ .Values.igs.coreBackend.port }}
+          resources: {}
+      restartPolicy: Always
+status: {}

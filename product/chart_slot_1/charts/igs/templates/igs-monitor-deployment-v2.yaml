@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f spv-docker-compose.yml
+    kompose.version: 1.26.1 (a9d05d509)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: igs-monitor
+  name: igs-monitor
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      io.kompose.service: igs-monitor
+  strategy: {}
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -f spv-docker-compose.yml
+        kompose.version: 1.26.1 (a9d05d509)
+      creationTimestamp: null
+      labels:
+        io.kompose.network/supervision: "true"
+        io.kompose.service: igs-monitor
+    spec:
+      imagePullSecrets:
+      - name: {{ .Values.docker.repository }}
+      containers:
+        - env:
+            - name: IGS_CADVISOR_HOST
+              value: igs_cadvisor_agent
+            - name: IGS_CADVISOR_PORT
+              value: "8080"
+            - name: IGS_GLOBAL_SYSTEM_MESSAGES_REST_HOST
+              value: lsup-system-messages-rest-agent
+            - name: IGS_GLOBAL_SYSTEM_MESSAGES_REST_PORT
+              value: "8082"
+            - name: IGS_LINKS_ENDPOINTS
+              value: lsup-link-rest-agent:8083
+            - name: IGS_SCHEDULER_PUBLISHER_SOCKET_BIND
+              value: tcp://*:6666
+          image: {{ .Values.igs.monitor.image }}
+          name: igs-monitor
+          resources: {}
+      restartPolicy: Always
+status: {}

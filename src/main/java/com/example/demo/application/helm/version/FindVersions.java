@@ -17,6 +17,7 @@ import java.util.Map;
 public class FindVersions {
     private static final String DEFAULT_FILE_YAML = "Chart.yaml";
     private static final String DEFAULT_FILE_YML = "Chart.yml";
+//    private static final String DEFAULT_SLOT = "chart_slot";
     private static final String REGEX_EXPRESSION = "(\\\\|\\/)Chart\\.(yaml|yml)$";
 
     @Value("${helm.path.base}")
@@ -24,10 +25,10 @@ public class FindVersions {
 
     public List<HelmResponse> find() throws IOException {
         List<HelmResponse> list = new ArrayList<>();
-        Files.walk(Paths.get(folder))
+        Files.walk(Paths.get(folder),2)
                 .filter(Files::isRegularFile)
-                .filter(path -> (DEFAULT_FILE_YAML.contains(path.getFileName().toString()) ||
-                        DEFAULT_FILE_YML.contains(path.getFileName().toString())))
+                .filter(path -> DEFAULT_FILE_YAML.contains(path.getFileName().toString()) ||
+                        DEFAULT_FILE_YML.contains(path.getFileName().toString()))
                 .forEach(path -> {
                     try {
                         //Prepare file to read
